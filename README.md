@@ -23,8 +23,17 @@ If this overhead is problematic, you can disable it by instead specifying the fo
 
 ```toml
 [dependencies]
-blurhash = { version = "0.2.3", default-features = false }
+blurhash = { version = "0.2.3", default-features = false, features = ["std"] }
 ```
+
+Blurhash can also run in `no_std` environments (with `alloc`) by disabling the default features:
+
+```toml
+[dependencies]
+blurhash = { version = "0.2.4", default-features = false, features = ["fast-linear-to-srgb"] }
+```
+
+Blurhash requires Rust 1.82 or later when using `no_std`.
 
 ### Encoding
 ```rust

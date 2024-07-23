@@ -1,5 +1,4 @@
 #![cfg_attr(not(any(test, feature = "std")), no_std)]
-#![cfg_attr(not(any(test, feature = "std")), feature(error_in_core))]
 
 //! A pure Rust implementation of [woltapp/blurhash][1].
 //!
