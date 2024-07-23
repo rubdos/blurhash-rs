@@ -31,6 +31,8 @@ jobs:
           "std,image",
           "std,image,fast-linear-to-srgb",
           "std,fast-linear-to-srgb",
+          "std,fast-linear-to-srgb,wasm",
+          "std,wasm",
           "std",
         ]
         include:
@@ -43,6 +45,10 @@ jobs:
           - toolchain: "nightly"
             coverage: false
             features: "fast-linear-to-srgb"
+
+          - toolchain: "nightly"
+            coverage: false
+            features: "wasm"
 
           - toolchain: "nightly"
             coverage: false
