@@ -24,6 +24,19 @@ jobs:
       matrix:
         toolchain: ["stable", "beta"]
         coverage: [false]
+        features: [
+          # With std
+          "std,gdk-pixbuf",
+          "std,gdk-pixbuf,fast-linear-to-srgb",
+          "std,image",
+          "std,image,fast-linear-to-srgb",
+          "std,fast-linear-to-srgb",
+          "std",
+
+          # no_std
+          "fast-linear-to-srgb",
+          "",
+        ]
         include:
           - toolchain: "nightly"
             coverage: true
@@ -47,17 +60,24 @@ jobs:
 
       - name: Run tests with default features
         uses: actions-rs/cargo@v1
-        if: ${{ !matrix.coverage }}
+        if: ${{ !matrix.coverage && matrix.features == '' }}
         with:
           command: test
           args: --all-targets --no-fail-fast
 
       - name: Run tests with all features
         uses: actions-rs/cargo@v1
-        if: ${{ !matrix.coverage }}
+        if: ${{ !matrix.coverage && matrix.features == '' }}
         with:
           command: test
           args: --all-targets --no-fail-fast --all-features
+
+      - name: Run tests with ${{ matrix.features }}
+        uses: actions-rs/cargo@v1
+        if: ${{ !matrix.coverage && matrix.features != '' }}
+        with:
+          command: test
+          args: --all-targets --no-fail-fast --no-default-features --features ${{ matrix.features }}
 
       - name: Run doc tests
         uses: actions-rs/cargo@v1
