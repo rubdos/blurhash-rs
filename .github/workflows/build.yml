@@ -34,12 +34,16 @@ jobs:
           "std",
         ]
         include:
+          # Coverage on nightly
           - toolchain: "nightly"
             coverage: true
             features: ""
+
+          # no-std build and tests
           - toolchain: "nightly"
             coverage: false
             features: "fast-linear-to-srgb"
+
           - toolchain: "nightly"
             coverage: false
             features: ""
