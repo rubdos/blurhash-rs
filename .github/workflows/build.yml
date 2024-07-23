@@ -63,14 +63,14 @@ jobs:
 
       - name: Run tests with default features
         uses: actions-rs/cargo@v1
-        if: ${{ !matrix.coverage && matrix.features == '' }}
+        if: ${{ !matrix.coverage && (matrix.features == '' || matrix.features == 'std')  }}
         with:
           command: test
           args: --all-targets --no-fail-fast
 
       - name: Run tests with all features
         uses: actions-rs/cargo@v1
-        if: ${{ !matrix.coverage && matrix.features == '' }}
+        if: ${{ !matrix.coverage && (matrix.features == '' || matrix.features == 'std') }}
         with:
           command: test
           args: --all-targets --no-fail-fast --all-features
