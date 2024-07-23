@@ -75,12 +75,12 @@ jobs:
           command: test
           args: --all-targets --no-fail-fast --all-features
 
-      - name: Run tests with ${{ matrix.features }}
+      - name: "Run tests with features: ${{ matrix.features }}"
         uses: actions-rs/cargo@v1
-        if: ${{ !matrix.coverage && matrix.features != '' }}
+        if: ${{ !matrix.coverage }}
         with:
           command: test
-          args: --all-targets --no-fail-fast --no-default-features --features ${{ matrix.features }}
+          args: --all-targets --no-fail-fast --no-default-features --features "${{ matrix.features }}"
 
       - name: Run doc tests
         uses: actions-rs/cargo@v1
