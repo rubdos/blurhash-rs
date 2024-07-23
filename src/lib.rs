@@ -1,3 +1,6 @@
+#![cfg_attr(not(any(test, feature = "std")), no_std)]
+#![cfg_attr(not(any(test, feature = "std")), feature(error_in_core))]
+
 //! A pure Rust implementation of [woltapp/blurhash][1].
 //!
 //! ### Encoding
@@ -27,9 +30,20 @@ mod dc;
 mod error;
 mod util;
 
+#[cfg(not(feature = "std"))]
+#[macro_use]
+extern crate alloc;
+
+#[cfg(not(feature = "std"))]
+use alloc::{string::String, vec::Vec};
+
+#[cfg(not(feature = "std"))]
+#[allow(unused_imports)]
+use num_traits::real::Real;
+
 pub use error::Error;
 
-use std::f32::consts::PI;
+use core::f32::consts::PI;
 use util::{linear_to_srgb, srgb_to_linear};
 
 /// Calculates the blurhash for an image using the given x and y component counts.

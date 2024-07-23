@@ -1,4 +1,4 @@
-use std::fmt;
+use core::fmt;
 
 #[derive(Debug)]
 pub enum Error {
@@ -11,18 +11,22 @@ pub enum Error {
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let message = match self {
-            Error::HashTooShort => "blurhash must be at least 6 characters long".to_string(),
-            Error::LengthMismatch { expected, actual } => format!(
+        match self {
+            Error::HashTooShort => write!(f, "blurhash must be at least 6 characters long"),
+            Error::LengthMismatch { expected, actual } => write!(
+                f,
                 "blurhash length mismatch: length is {} but it should be {}",
                 actual, expected
             ),
-            Error::InvalidBase83(byte) => format!("Invalid base83 character: {:?}", *byte as char),
-            Error::InvalidAscii => "blurhash must be valid ASCII".into(),
-            Error::ComponentsOutOfRange => "blurhash must have between 1 and 9 components".into(),
-        };
-        write!(f, "{}", message)
+            Error::InvalidBase83(byte) => {
+                write!(f, "Invalid base83 character: {:?}", *byte as char)
+            }
+            Error::InvalidAscii => write!(f, "blurhash must be valid ASCII"),
+            Error::ComponentsOutOfRange => {
+                write!(f, "blurhash must have between 1 and 9 components")
+            }
+        }
     }
 }
 
-impl std::error::Error for Error {}
+impl core::error::Error for Error {}
