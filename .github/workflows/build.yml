@@ -24,8 +24,8 @@ jobs:
 
       - run: cd blurhash-rs-wasm
       - run: cargo test
-      - run: wasm-pack test --headless --chrome
-      - run: wasm-pack test --headless --firefox
+      - run: wasm-pack test --headless --chrome -- --package blurhash-rs-wasm
+      - run: wasm-pack test --headless --firefox -- --package blurhash-rs-wasm
 
   build_and_test:
     name: cargo test
