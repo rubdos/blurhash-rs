@@ -1,3 +1,7 @@
+#[cfg(all(not(test), not(feature = "std")))]
+#[allow(unused)]
+use num_traits::real::Real;
+
 use super::util::sign_pow;
 
 pub fn encode(value: [f32; 3], maximum_value: f32) -> u32 {

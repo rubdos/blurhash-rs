@@ -14,6 +14,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - run: cd blurhash-rs-wasm
+      - run: cargo test
+      - run: wasm-pack test --headless --chrome -- --package blurhash-rs-wasm
+      - run: wasm-pack test --headless --firefox -- --package blurhash-rs-wasm
+
   build_and_test:
     name: cargo test
     runs-on: ubuntu-latest
@@ -24,9 +37,29 @@ jobs:
       matrix:
         toolchain: ["stable", "beta"]
         coverage: [false]
+        features: [
+          # With std
+          "std,gdk-pixbuf",
+          "std,gdk-pixbuf,fast-linear-to-srgb",
+          "std,image",
+          "std,image,fast-linear-to-srgb",
+          "std,fast-linear-to-srgb",
+          "std",
+        ]
         include:
+          # Coverage on nightly
           - toolchain: "nightly"
             coverage: true
+            features: ""
+
+          # no-std build and tests
+          - toolchain: "nightly"
+            coverage: false
+            features: "fast-linear-to-srgb"
+
+          - toolchain: "nightly"
+            coverage: false
+            features: ""
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -47,17 +80,24 @@ jobs:
 
       - name: Run tests with default features
         uses: actions-rs/cargo@v1
-        if: ${{ !matrix.coverage }}
+        if: ${{ !matrix.coverage && (matrix.features == '' || matrix.features == 'std')  }}
         with:
           command: test
           args: --all-targets --no-fail-fast
 
       - name: Run tests with all features
         uses: actions-rs/cargo@v1
-        if: ${{ !matrix.coverage }}
+        if: ${{ !matrix.coverage && (matrix.features == '' || matrix.features == 'std') }}
         with:
           command: test
           args: --all-targets --no-fail-fast --all-features
+
+      - name: "Run tests with features: ${{ matrix.features }}"
+        uses: actions-rs/cargo@v1
+        if: ${{ !matrix.coverage }}
+        with:
+          command: test
+          args: --all-targets --no-fail-fast --no-default-features --features "${{ matrix.features }}"
 
       - name: Run doc tests
         uses: actions-rs/cargo@v1

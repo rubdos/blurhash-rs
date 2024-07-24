@@ -1,3 +1,6 @@
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
+
 use crate::Error;
 
 include!(concat!(env!("OUT_DIR"), "/base83_lookup.rs"));
