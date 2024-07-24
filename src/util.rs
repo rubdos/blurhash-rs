@@ -1,5 +1,8 @@
 include!(concat!(env!("OUT_DIR"), "/srgb_lookup.rs"));
 
+#[cfg(not(feature = "std"))]
+use num_traits::Float;
+
 /// linear 0.0-1.0 floating point to srgb 0-255 integer conversion.
 #[cfg(not(feature = "fast-linear-to-srgb"))]
 pub fn linear_to_srgb(value: f32) -> u8 {

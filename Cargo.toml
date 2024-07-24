@@ -10,15 +10,10 @@ version = "0.2.3"
 authors = ["Ruben De Smet <ruben.de.smet@rubdos.be>", "Raincal <cyj94228@gmail.com>"]
 edition = "2018"
 
-[lib]
-crate-type = ["cdylib", "rlib"]
-
 [dependencies]
 image = { version = ">= 0.23, <= 0.25", optional = true }
 gdk-pixbuf = { version = ">= 0.18, <= 0.19", optional = true }
 num-traits = { version = "0.2", default-features = false, features = ["libm"] }
-wasm-bindgen = { version = "0.2", optional = true }
-js-sys = { version = "0.3", optional = true }
 
 [dev-dependencies]
 image = ">= 0.23, <= 0.25"
@@ -32,8 +27,6 @@ image = [ "dep:image" ]
 gdk-pixbuf = [ "dep:gdk-pixbuf" ]
 fast-linear-to-srgb = []
 
-wasm = ["dep:wasm-bindgen", "dep:js-sys"]
-
 [[bench]]
 name = "decode"
 harness = false
@@ -41,3 +34,12 @@ harness = false
 [[bench]]
 name = "encode"
 harness = false
+
+[workspace]
+members = [
+    "blurhash-rs-wasm",
+]
+
+[profile.release] #.package.blurhash-rs-wasm]
+# Tell `rustc` to optimize for small code size.
+opt-level = "z"
