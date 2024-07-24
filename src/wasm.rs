@@ -22,8 +22,9 @@ pub fn decode(
     blurhash: &str,
     width: u32,
     height: u32,
-    punch: f32,
+    punch: Option<f32>,
 ) -> Result<Vec<u8>, js_sys::Error> {
+    let punch = punch.unwrap_or(1.0);
     crate::decode(blurhash, width, height, punch)
         .map_err(|err| js_sys::Error::new(&err.to_string()).into())
 }
