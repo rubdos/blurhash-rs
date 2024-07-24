@@ -36,7 +36,9 @@ extern crate alloc;
 #[cfg(not(feature = "std"))]
 use alloc::{string::String, vec::Vec};
 
+#[cfg(not(test))]
 #[cfg(not(feature = "std"))]
+#[allow(unused)]
 use num_traits::real::Real;
 
 pub use error::Error;

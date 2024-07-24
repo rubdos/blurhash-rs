@@ -1,4 +1,5 @@
-#[cfg(not(feature = "std"))]
+#[cfg(all(not(test), not(feature = "std")))]
+#[allow(unused)]
 use num_traits::real::Real;
 
 use super::util::sign_pow;
